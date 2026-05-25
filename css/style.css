@@ -98,6 +98,18 @@ img {
 }
 
 /* ==============================
+   Icons
+   ============================== */
+.icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: currentColor;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* ==============================
    Header
    ============================== */
 .header {
@@ -130,6 +142,8 @@ img {
 
 .logo__icon {
     font-size: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 
 .nav {
@@ -321,6 +335,9 @@ img {
 .card__icon {
     font-size: 2.5rem;
     margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .card__title {
@@ -646,11 +663,14 @@ img {
     display: flex;
     gap: var(--space-md);
     margin-bottom: var(--space-lg);
+    align-items: flex-start;
 }
 
 .contact-item__icon {
     font-size: 1.5rem;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
 }
 
 .contact-item__text strong {
@@ -772,6 +792,8 @@ img {
     font-weight: 700;
     color: var(--color-white);
     margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
 }
 
 .footer__desc {
@@ -789,6 +811,9 @@ img {
 .footer__links li {
     margin-bottom: var(--space-sm);
     font-size: var(--fs-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
 }
 
 .footer__links a:hover {
@@ -857,7 +882,7 @@ img {
 .scroll-top {
     position: fixed;
     bottom: var(--space-xl);
-    right: var(--space-xl);
+    right: 80px;
     width: 48px;
     height: 48px;
     background: var(--color-accent);
@@ -881,4 +906,19 @@ img {
 .scroll-top:hover {
     background: var(--color-accent-hover);
     transform: translateY(-2px);
+}
+
+/* ==============================
+   AI Widget Anchor
+   ============================== */
+.widget-anchor {
+    position: fixed;
+    bottom: var(--space-xl);
+    right: var(--space-xl);
+    z-index: 1100;
+    pointer-events: none;
+}
+
+.widget-anchor > * {
+    pointer-events: auto;
 }
