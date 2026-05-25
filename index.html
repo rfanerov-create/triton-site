@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ООО Тритон — профессиональный ремонт и изготовление гидравлических цилиндров для промышленности B2B">
+    <title>ООО «Тритон» — Ремонт и изготовление гидравлических цилиндров</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <span class="logo__icon">⚙</span>
+            <span class="logo__text">ООО «Тритон»</span>
+        </a>
+        <nav class="nav" id="nav">
+            <button class="nav__close" id="navClose" aria-label="Закрыть меню">&times;</button>
+            <a href="index.html" class="nav__link nav__link--active">Главная</a>
+            <a href="services.html" class="nav__link">Услуги</a>
+            <a href="works.html" class="nav__link">Наши работы</a>
+            <a href="about.html" class="nav__link">О компании</a>
+            <a href="contacts.html" class="nav__link">Контакты</a>
+        </nav>
+        <button class="header__burger" id="burger" aria-label="Открыть меню">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<main>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero__content">
+                <h1 class="hero__title">Ремонт и изготовление <span>гидравлических цилиндров</span></h1>
+                <p class="hero__subtitle">Надёжные решения для промышленности. Работаем с 2008 года. Гарантия до 24 месяцев.</p>
+                <div class="hero__buttons">
+                    <a href="contacts.html" class="btn btn--primary">Оставить заявку</a>
+                    <a href="services.html" class="btn btn--outline">Наши услуги</a>
+                </div>
+            </div>
+            <div class="hero__stats">
+                <div class="stat">
+                    <span class="stat__number">18+</span>
+                    <span class="stat__label">Лет на рынке</span>
+                </div>
+                <div class="stat">
+                    <span class="stat__number">1 200+</span>
+                    <span class="stat__label">Цилиндров в год</span>
+                </div>
+                <div class="stat">
+                    <span class="stat__number">500+</span>
+                    <span class="stat__label">Клиентов</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES PREVIEW -->
+    <section class="section section--light">
+        <div class="container">
+            <h2 class="section__title">Наши услуги</h2>
+            <p class="section__subtitle">Полный цикл обслуживания гидравлики</p>
+            <div class="services-grid">
+                <div class="card">
+                    <div class="card__icon">🔧</div>
+                    <h3 class="card__title">Ремонт цилиндров</h3>
+                    <p class="card__text">Диагностика, восстановление и ремонт гидравлических цилиндров любых производителей и типоразмеров.</p>
+                    <a href="services.html" class="card__link">Подробнее →</a>
+                </div>
+                <div class="card">
+                    <div class="card__icon">🏭</div>
+                    <h3 class="card__title">Изготовление</h3>
+                    <p class="card__text">Производство гидравлических цилиндров по чертежам заказчика или реверс-инжинирингу с нуля.</p>
+                    <a href="services.html" class="card__link">Подробнее →</a>
+                </div>
+                <div class="card">
+                    <div class="card__icon">📋</div>
+                    <h3 class="card__title">Техобслуживание</h3>
+                    <p class="card__text">Плановое ТО, замена уплотнений, восстановление штоков и гильз на выезде и в цеху.</p>
+                    <a href="services.html" class="card__link">Подробнее →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASES PREVIEW -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section__title">Реализованные проекты</h2>
+            <p class="section__subtitle">Примеры наших работ для промышленных предприятий</p>
+            <div class="cases-grid" id="cases-preview">
+                <!-- Загружается из cases.js -->
+            </div>
+            <div class="center">
+                <a href="works.html" class="btn btn--outline">Все работы</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <h2 class="cta__title">Нужен ремонт или новый цилиндр?</h2>
+            <p class="cta__text">Свяжитесь с нами для бесплатной консультации и расчёта стоимости. Ответим в течение 2 часов.</p>
+            <a href="contacts.html" class="btn btn--primary btn--large">Связаться с нами</a>
+        </div>
+    </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer__grid">
+            <div class="footer__col">
+                <div class="footer__logo">⚙ ООО «Тритон»</div>
+                <p class="footer__desc">Ремонт и изготовление гидравлических цилиндров для промышленных предприятий России.</p>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__heading">Навигация</h4>
+                <ul class="footer__links">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="services.html">Услуги</a></li>
+                    <li><a href="works.html">Наши работы</a></li>
+                    <li><a href="about.html">О компании</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__heading">Контакты</h4>
+                <ul class="footer__links">
+                    <li>📞 <a href="tel:+74951234567">+7 (495) 123-45-67</a></li>
+                    <li>✉️ <a href="mailto:info@triton-hydraulic.ru">info@triton-hydraulic.ru</a></li>
+                    <li>📍 г. Москва, ул. Промышленная, д. 15</li>
+                    <li>🕐 Пн–Пт: 8:00 – 18:00</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2008–2026 ООО «Тритон». Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/cases.js"></script>
+<script src="widget/widget.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

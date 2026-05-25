@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Контакты ООО Тритон — адрес, телефон, email, форма обратной связи">
+    <title>Контакты — ООО «Тритон»</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <span class="logo__icon">⚙</span>
+            <span class="logo__text">ООО «Тритон»</span>
+        </a>
+        <nav class="nav" id="nav">
+            <button class="nav__close" id="navClose" aria-label="Закрыть меню">&times;</button>
+            <a href="index.html" class="nav__link">Главная</a>
+            <a href="services.html" class="nav__link">Услуги</a>
+            <a href="works.html" class="nav__link">Наши работы</a>
+            <a href="about.html" class="nav__link">О компании</a>
+            <a href="contacts.html" class="nav__link nav__link--active">Контакты</a>
+        </nav>
+        <button class="header__burger" id="burger" aria-label="Открыть меню">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<main>
+    <section class="page-hero">
+        <div class="container">
+            <h1>Контакты</h1>
+            <p>Свяжитесь с нами удобным способом — ответим в течение 2 часов</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="contacts-grid">
+                <div class="contact-info">
+                    <h2>Наши координаты</h2>
+                    <div class="contact-item">
+                        <div class="contact-item__icon">📍</div>
+                        <div class="contact-item__text">
+                            <strong>Адрес</strong>
+                            <p>г. Москва, ул. Промышленная, д. 15, стр. 2<br>Цех гидравлики, ООО «Тритон»</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-item__icon">📞</div>
+                        <div class="contact-item__text">
+                            <strong>Телефон</strong>
+                            <p><a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+                            <p><a href="tel:+78001234567">8 (800) 123-45-67</a> (бесплатно по РФ)</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-item__icon">✉️</div>
+                        <div class="contact-item__text">
+                            <strong>Email</strong>
+                            <p><a href="mailto:info@triton-hydraulic.ru">info@triton-hydraulic.ru</a></p>
+                            <p><a href="mailto:sales@triton-hydraulic.ru">sales@triton-hydraulic.ru</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-item__icon">🕐</div>
+                        <div class="contact-item__text">
+                            <strong>Режим работы</strong>
+                            <p>Пн–Пт: 8:00 – 18:00<br>Сб: 9:00 – 15:00<br>Вс: выходной</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-item__icon">🏢</div>
+                        <div class="contact-item__text">
+                            <strong>Реквизиты</strong>
+                            <p>ООО «Тритон»<br>ИНН: 7701234567<br>ОГРН: 1087701234567</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper">
+                    <h2>Оставить заявку</h2>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Ваше имя *</label>
+                            <input type="text" id="name" name="name" placeholder="Иван Петров" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Компания</label>
+                            <input type="text" id="company" name="company" placeholder="ООО «Завод»">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Телефон *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="email@company.ru">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Описание задачи *</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Опишите: тип цилиндра, неисправность, требуемые сроки..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full">Отправить заявку</button>
+                        <p class="form-note">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой конфиденциальности</a></p>
+                    </form>
+                    <div class="form-success" id="formSuccess" style="display:none;">
+                        <div class="form-success__icon">✅</div>
+                        <h3>Заявка отправлена!</h3>
+                        <p>Наш инженер свяжется с вами в течение 2 часов в рабочее время.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAP PLACEHOLDER -->
+    <section class="map">
+        <div class="container">
+            <div class="map__placeholder">
+                <p>🗺 Здесь будет карта (Яндекс.Карты / Google Maps iframe)</p>
+                <p>г. Москва, ул. Промышленная, д. 15</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__grid">
+            <div class="footer__col">
+                <div class="footer__logo">⚙ ООО «Тритон»</div>
+                <p class="footer__desc">Ремонт и изготовление гидравлических цилиндров для промышленных предприятий России.</p>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__heading">Навигация</h4>
+                <ul class="footer__links">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="services.html">Услуги</a></li>
+                    <li><a href="works.html">Наши работы</a></li>
+                    <li><a href="about.html">О компании</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__heading">Контакты</h4>
+                <ul class="footer__links">
+                    <li>📞 <a href="tel:+74951234567">+7 (495) 123-45-67</a></li>
+                    <li>✉️ <a href="mailto:info@triton-hydraulic.ru">info@triton-hydraulic.ru</a></li>
+                    <li>📍 г. Москва, ул. Промышленная, д. 15</li>
+                    <li>🕐 Пн–Пт: 8:00 – 18:00</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2008–2026 ООО «Тритон». Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

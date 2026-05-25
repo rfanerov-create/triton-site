@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Портфолио работ ООО Тритон — примеры ремонта и изготовления гидравлических цилиндров">
+    <title>Наши работы — ООО «Тритон»</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <span class="logo__icon">⚙</span>
+            <span class="logo__text">ООО «Тритон»</span>
+        </a>
+        <nav class="nav" id="nav">
+            <button class="nav__close" id="navClose" aria-label="Закрыть меню">&times;</button>
+            <a href="index.html" class="nav__link">Главная</a>
+            <a href="services.html" class="nav__link">Услуги</a>
+            <a href="works.html" class="nav__link nav__link--active">Наши работы</a>
+            <a href="about.html" class="nav__link">О компании</a>
+            <a href="contacts.html" class="nav__link">Контакты</a>
+        </nav>
+        <button class="header__burger" id="burger" aria-label="Открыть меню">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<main>
+    <section class="page-hero">
+        <div class="container">
+            <h1>Наши работы</h1>
+            <p>Реальные проекты для промышленных предприятий — от диагностики до ввода в эксплуатацию</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="cases-grid" id="cases-full">
+                <!-- Загружается из cases.js -->
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__grid">
+            <div class="footer__col">
+                <div class="footer__logo">⚙ ООО «Тритон»</div>
+                <p class="footer__desc">Ремонт и изготовление гидравлических цилиндров для промышленных предприятий России.</p>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__heading">Навигация</h4>
+                <ul class="footer__links">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="services.html">Услуги</a></li>
+                    <li><a href="works.html">Наши работы</a></li>
+                    <li><a href="about.html">О компании</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__heading">Контакты</h4>
+                <ul class="footer__links">
+                    <li>📞 <a href="tel:+74951234567">+7 (495) 123-45-67</a></li>
+                    <li>✉️ <a href="mailto:info@triton-hydraulic.ru">info@triton-hydraulic.ru</a></li>
+                    <li>📍 г. Москва, ул. Промышленная, д. 15</li>
+                    <li>🕐 Пн–Пт: 8:00 – 18:00</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2008–2026 ООО «Тритон». Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/cases.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
