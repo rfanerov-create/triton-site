@@ -1,6 +1,6 @@
 /**
  * main.js — Основной JS для сайта ООО «Тритон»
- * Функции: мобильное меню, плавный скролл, кнопка «наверх», валидация формы
+ * Функции: мобильное меню, плавный скролл, кнопка «наверх», валидация формы, отправка через Formspree
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -24,19 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (burger) burger.addEventListener('click', openNav);
     if (navClose) navClose.addEventListener('click', closeNav);
 
-    // Закрытие при клике на ссылку
     navLinks.forEach(link => {
         link.addEventListener('click', closeNav);
     });
 
-    // Закрытие при клике вне меню
     document.addEventListener('click', (e) => {
         if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !burger.contains(e.target)) {
             closeNav();
         }
     });
 
-    // Закрытие по Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && nav && nav.classList.contains('open')) {
             closeNav();
@@ -65,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ====== КНОПКА «НАВЕРХ» ======
     const scrollTopBtn = document.createElement('button');
     scrollTopBtn.className = 'scroll-top';
-    scrollTopBtn.innerHTML = '↑';
+    scrollTopBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
     scrollTopBtn.setAttribute('aria-label', 'Наверх');
     document.body.appendChild(scrollTopBtn);
 
@@ -84,34 +81,80 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', toggleScrollTop);
     toggleScrollTop();
 
-    // ====== ВАЛИДАЦИЯ ФОРМЫ КОНТАКТОВ ======
+    // ====== ВАЛИДАЦИЯ И ОТПРАВКА ФОРМЫ КОНТАКТОВ ======
     const contactForm = document.getElementById('contactForm');
     const formSuccess = document.getElementById('formSuccess');
 
+    // Простая валидация телефона: минимум 10 цифр
+    function validatePhone(phone) {
+        const digits = phone.replace(/\D/g, '');
+        return digits.length >= 10;
+    }
+
     if (contactForm) {
-        contactForm.addEventListener('submit', function (e) {
+        contactForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            const name = this.querySelector('#name').value.trim();
-            const phone = this.querySelector('#phone').value.trim();
-            const message = this.querySelector('#message').value.trim();
+            const name = this.querySelector('#name')?.value.trim();
+            const company = this.querySelector('#company')?.value.trim();
+            const phone = this.querySelector('#phone')?.value.trim();
+            const email = this.querySelector('#email')?.value.trim();
+            const message = this.querySelector('#message')?.value.trim();
 
+            // Валидация обязательных полей
             if (!name || !phone || !message) {
                 alert('Пожалуйста, заполните все обязательные поля.');
                 return;
             }
 
-            // Имитация отправки
-            contactForm.style.display = 'none';
-            formSuccess.style.display = 'block';
+            // Валидация телефона
+            if (!validatePhone(phone)) {
+                alert('Пожалуйста, введите корректный номер телефона (минимум 10 цифр).');
+                return;
+            }
 
-            console.log('Форма отправлена:', {
-                name,
-                company: this.querySelector('#company').value.trim(),
-                phone,
-                email: this.querySelector('#email').value.trim(),
-                message
-            });
+            // Блокируем кнопку, чтобы избежать повторных отправок
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Отправка...';
+
+            // 🔧 ЗАМЕНИ 'YOUR_FORM_ID' НА РЕАЛЬНЫЙ ID ПОСЛЕ РЕГИСТРАЦИИ НА FORMSPREE.IO
+            const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+            try {
+                const response = await fetch(FORMSPREE_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        company,
+                        phone,
+                        email,
+                        message,
+                        _subject: `Новая заявка с сайта: ${name}`
+                    })
+                });
+
+                if (response.ok) {
+                    // Успех: скрываем форму, показываем сообщение
+                    contactForm.style.display = 'none';
+                    if (formSuccess) formSuccess.style.display = 'block';
+                    contactForm.reset();
+                } else {
+                    throw new Error('Formspree response not ok');
+                }
+            } catch (error) {
+                console.error('Ошибка отправки формы:', error);
+                alert('Ошибка отправки. Позвоните нам по телефону.');
+            } finally {
+                // Разблокируем кнопку в любом случае
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
         });
     }
 
@@ -137,15 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ====== ХЕДЕР ПРИ СКРОЛЛЕ ======
     const header = document.querySelector('.header');
     if (header) {
-        let lastScroll = 0;
         window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            if (currentScroll > 100) {
+            if (window.pageYOffset > 100) {
                 header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.15)';
             } else {
                 header.style.boxShadow = 'var(--shadow-sm)';
             }
-            lastScroll = currentScroll;
         });
     }
 
