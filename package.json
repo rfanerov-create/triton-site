@@ -1,0 +1,27 @@
+{
+  "name": "triton",
+  "version": "1.0.0",
+  "description": "> Ремонт и изготовление гидравлических цилиндров для промышленных предприятий B2B. Работаем с 2006 года.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rfanerov-create/triton-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rfanerov-create/triton-site/issues"
+  },
+  "homepage": "https://github.com/rfanerov-create/triton-site#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "node-fetch": "^3.3.2"
+  }
+}

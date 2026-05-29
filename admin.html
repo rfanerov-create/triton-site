@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triton Admin — Панель управления</title>
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --admin-dark: #0A2540;
+      --admin-orange: #FF6B2B;
+      --admin-bg: #F4F7FA;
+      --admin-white: #FFFFFF;
+      --admin-text: #102033;
+      --admin-muted: #6B7280;
+      --admin-border: #D9E2EC;
+      --admin-danger: #D93025;
+      --admin-shadow: 0 2px 8px rgba(10, 37, 64, 0.08);
+      --admin-radius: 8px;
+      --admin-transition: 0.2s ease;
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--admin-text);
+      background: var(--admin-bg);
+      min-height: 100vh;
+    }
+
+    /* ===== UTILITIES ===== */
+    .admin-hidden {
+      display: none !important;
+    }
+
+    .admin-sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ===== LOGIN SCREEN ===== */
+    .admin-login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+      background: linear-gradient(135deg, var(--admin-dark) 0%, #1a3a5c 100%);
+    }
+
+    .admin-login__card {
+      background: var(--admin-white);
+      border-radius: var(--admin-radius);
+      padding: 32px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .admin-login__title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--admin-dark);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .admin-login__subtitle {
+      color: var(--admin-muted);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    /* ===== FORMS ===== */
+    .admin-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .admin-field__label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--admin-text);
+    }
+
+    .admin-field__label::after {
+      content: '*';
+      color: var(--admin-danger);
+      margin-left: 2px;
+    }
+
+    .admin-field__label:not([for]):not(.admin-field__label--required)::after {
+      content: none;
+    }
+
+    .admin-input,
+    .admin-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      border: 1px solid var(--admin-border);
+      border-radius: var(--admin-radius);
+      background: var(--admin-white);
+      color: var(--admin-text);
+      transition: border-color var(--admin-transition), box-shadow var(--admin-transition);
+    }
+
+    .admin-input:focus,
+    .admin-textarea:focus {
+      outline: none;
+      border-color: var(--admin-orange);
+      box-shadow: 0 0 0 3px rgba(255, 107, 43, 0.15);
+    }
+
+    .admin-input::placeholder,
+    .admin-textarea::placeholder {
+      color: var(--admin-muted);
+    }
+
+    .admin-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .admin-textarea--large {
+      min-height: 180px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+    }
+
+    /* ===== BUTTONS ===== */
+    .admin-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      border-radius: var(--admin-radius);
+      cursor: pointer;
+      transition: all var(--admin-transition);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .admin-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .admin-btn--primary {
+      background: var(--admin-orange);
+      color: var(--admin-white);
+    }
+
+    .admin-btn--primary:hover:not(:disabled) {
+      background: #e55a21;
+      transform: translateY(-1px);
+    }
+
+    .admin-btn--outline {
+      background: transparent;
+      color: var(--admin-white);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .admin-btn--outline:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .admin-btn--danger {
+      background: var(--admin-danger);
+      color: var(--admin-white);
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .admin-btn--danger:hover:not(:disabled) {
+      background: #c42a1f;
+    }
+
+    /* ===== MESSAGES ===== */
+    .admin-error,
+    .admin-success {
+      padding: 10px 12px;
+      border-radius: var(--admin-radius);
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .admin-error {
+      background: #fef2f2;
+      color: var(--admin-danger);
+      border: 1px solid #fecaca;
+    }
+
+    .admin-success {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .admin-error.show,
+    .admin-success.show {
+      display: block;
+      animation: admin-slide-in 0.2s ease;
+    }
+
+    @keyframes admin-slide-in {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== HEADER ===== */
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 24px;
+      background: var(--admin-dark);
+      color: var(--admin-white);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .admin-header__title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .admin-header__subtitle {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .admin-main {
+      padding: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ===== CARDS ===== */
+    .admin-card {
+      background: var(--admin-white);
+      border-radius: var(--admin-radius);
+      padding: 24px;
+      box-shadow: var(--admin-shadow);
+      border: 1px solid var(--admin-border);
+    }
+
+    .admin-card__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--admin-dark);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+
+    /* ===== FORM SECTION ===== */
+    .admin-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .admin-form .admin-field:last-child {
+      grid-column: 1 / -1;
+    }
+
+    /* ===== IMAGE PREVIEW ===== */
+    .admin-preview {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .admin-preview img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: var(--admin-radius);
+      border: 2px solid var(--admin-border);
+      box-shadow: var(--admin-shadow);
+    }
+
+    /* ===== CASES LIST ===== */
+    .admin-cases-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .admin-empty {
+      text-align: center;
+      color: var(--admin-muted);
+      padding: 32px 16px;
+      font-size: 14px;
+    }
+
+    .admin-case {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 16px;
+      padding: 16px;
+      background: var(--admin-white);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--admin-radius);
+      transition: box-shadow var(--admin-transition);
+    }
+
+    .admin-case:hover {
+      box-shadow: 0 4px 16px rgba(10, 37, 64, 0.12);
+    }
+
+    .admin-case__image {
+      width: 140px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: var(--admin-radius);
+      background: var(--admin-bg);
+    }
+
+    .admin-case__content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .admin-case__meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .admin-case__category {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      background: rgba(255, 107, 43, 0.12);
+      color: var(--admin-orange);
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .admin-case__date {
+      font-size: 12px;
+      color: var(--admin-muted);
+    }
+
+    .admin-case__title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--admin-text);
+      line-height: 1.3;
+    }
+
+    .admin-case__description {
+      font-size: 13px;
+      color: var(--admin-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+
+    .admin-case__duration {
+      font-size: 12px;
+      color: var(--admin-text);
+      font-weight: 500;
+    }
+
+    .admin-case__delete {
+      align-self: flex-start;
+      margin-top: auto;
+    }
+
+    /* ===== AI PROMPT SECTION ===== */
+    #aiPromptTextarea {
+      margin-bottom: 16px;
+    }
+
+    /* ===== FOOTER NOTE ===== */
+    .admin-footer-note {
+      text-align: center;
+      padding: 16px 24px 32px;
+      color: var(--admin-muted);
+      font-size: 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .admin-footer-note code {
+      background: var(--admin-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+      }
+
+      .admin-header__title {
+        font-size: 16px;
+      }
+
+      .admin-main {
+        padding: 16px;
+        gap: 16px;
+      }
+
+      .admin-card {
+        padding: 20px 16px;
+      }
+
+      .admin-card__title {
+        font-size: 15px;
+        margin-bottom: 16px;
+      }
+
+      .admin-form {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-cases-list {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-case {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-case__image {
+        width: 100%;
+        height: 200px;
+      }
+
+      .admin-login__card {
+        padding: 24px 20px;
+      }
+
+      .admin-login__title {
+        font-size: 20px;
+      }
+    }
+
+    /* ===== PRINT STYLES ===== */
+    @media print {
+      .admin-btn,
+      .admin-header,
+      .admin-footer-note {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div class="admin-login" id="loginScreen">
+    <form class="admin-login__card" id="loginForm" autocomplete="off">
+      <h1 class="admin-login__title">Triton Admin</h1>
+      <p class="admin-login__subtitle">Вход в панель управления</p>
+
+      <label class="admin-field">
+        <span class="admin-field__label">Пароль</span>
+        <input class="admin-input" id="passwordInput" type="password" placeholder="Введите пароль" required autofocus>
+      </label>
+
+      <p class="admin-error" id="loginError" role="alert"></p>
+
+      <button class="admin-btn admin-btn--primary" type="submit" style="width: 100%;">Войти</button>
+    </form>
+  </div>
+
+  <!-- ===== ADMIN APP ===== -->
+  <div class="admin-app admin-hidden" id="adminApp">
+
+    <header class="admin-header">
+      <div>
+        <h1 class="admin-header__title">Админ-панель Triton Hydraulics</h1>
+        <p class="admin-header__subtitle">Управление кейсами и AI-виджетом</p>
+      </div>
+      <button class="admin-btn admin-btn--outline" id="logoutBtn" type="button">Выйти</button>
+    </header>
+
+    <main class="admin-main">
+
+      <!-- ===== ADD CASE FORM ===== -->
+      <section class="admin-card">
+        <h2 class="admin-card__title">Добавить новый кейс</h2>
+
+        <form class="admin-form" id="caseForm">
+          <label class="admin-field">
+            <span class="admin-field__label admin-field__label--required">Заголовок</span>
+            <input class="admin-input" id="caseTitle" type="text" placeholder="Например: Ремонт гидроцилиндра пресса" required>
+          </label>
+
+          <label class="admin-field">
+            <span class="admin-field__label admin-field__label--required">Категория</span>
+            <select class="admin-input" id="caseCategory" required>
+              <option value="">Выберите категорию</option>
+              <option value="Ремонт">Ремонт</option>
+              <option value="Изготовление">Изготовление</option>
+              <option value="Реверс-инжиниринг">Реверс-инжиниринг</option>
+              <option value="Обслуживание">Обслуживание</option>
+            </select>
+          </label>
+
+          <label class="admin-field" style="grid-column: 1 / -1;">
+            <span class="admin-field__label admin-field__label--required">Описание</span>
+            <textarea class="admin-textarea" id="caseDescription" placeholder="Опишите выполненные работы, результаты и особенности проекта..." required></textarea>
+          </label>
+
+          <label class="admin-field">
+            <span class="admin-field__label admin-field__label--required">Дата</span>
+            <input class="admin-input" id="caseDate" type="date" required>
+          </label>
+
+          <label class="admin-field">
+            <span class="admin-field__label admin-field__label--required">Длительность работ</span>
+            <input class="admin-input" id="caseDuration" type="text" placeholder="Например: 5 рабочих дней" required>
+          </label>
+
+          <label class="admin-field">
+            <span class="admin-field__label admin-field__label--required">Фото</span>
+            <input class="admin-input" id="caseImage" type="file" accept="image/*" required>
+          </label>
+
+          <div class="admin-preview" id="imagePreview" aria-live="polite"></div>
+
+          <p class="admin-error" id="caseError" role="alert" style="grid-column: 1 / -1;"></p>
+          <p class="admin-success" id="caseSuccess" role="status" style="grid-column: 1 / -1;"></p>
+
+          <button class="admin-btn admin-btn--primary" type="submit" style="grid-column: 1 / -1;">Добавить кейс</button>
+        </form>
+      </section>
+
+      <!-- ===== CASES LIST ===== -->
+      <section class="admin-card">
+        <h2 class="admin-card__title">Существующие кейсы</h2>
+        <div class="admin-cases-list" id="casesList" aria-live="polite"></div>
+      </section>
+
+      <!-- ===== AI PROMPT MANAGER ===== -->
+      <section class="admin-card">
+        <h2 class="admin-card__title">Системный промпт AI-виджета</h2>
+
+        <textarea class="admin-textarea admin-textarea--large" id="aiPromptTextarea" placeholder="Введите системный промпт для AI-консультанта..."></textarea>
+
+        <p class="admin-error" id="promptError" role="alert"></p>
+        <p class="admin-success" id="promptSuccess" role="status"></p>
+
+        <button class="admin-btn admin-btn--primary" id="savePromptBtn" type="button">Сохранить промпт</button>
+      </section>
+
+    </main>
+
+    <footer class="admin-footer-note">
+      <!-- Важно: это простая локальная админ-панель. -->
+      <!-- Она не защищает данные на сервере и подходит только для демо/прототипа. -->
+      <p>⚠️ <strong>Внимание:</strong> это простая локальная админ-панель. Она не защищает данные на сервере и подходит только для демо/прототипа. Все данные хранятся в <code>localStorage</code> вашего браузера.</p>
+    </footer>
+  </div>
+
+  <script>
+    /**
+     * ============================================
+     * Triton Hydraulics — Admin Panel (admin.html)
+     * ============================================
+     * 
+     * Важно: это простая локальная админ-панель.
+     * Она не защищает данные на сервере и подходит только для демо/прототипа.
+     * 
+     * Все данные хранятся в localStorage браузера.
+     * Нет внешней зависимости, бэкенда или API.
+     * 
+     * Keys used in localStorage:
+     * - tritonAdminAuth: string ('true' if authenticated)
+     * - tritonCases: array of case objects
+     * - tritonAiSystemPrompt: string
+     */
+
+    'use strict';
+
+    // ===== CONFIGURATION =====
+    const ADMIN_PASSWORD = 'triton2026';
+    const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2 MB
+    const MESSAGE_TIMEOUT = 3000; // 3 seconds
+
+    const STORAGE_KEYS = {
+      AUTH: 'tritonAdminAuth',
+      CASES: 'tritonCases',
+      AI_PROMPT: 'tritonAiSystemPrompt'
+    };
+
+    const DEFAULT_AI_PROMPT = `Ты AI-консультант компании ООО «Тритон». Помогаешь клиентам разобраться с ремонтом, изготовлением и обслуживанием гидравлических цилиндров. Отвечай кратко, профессионально, на русском языке. Твоя цель — уточнить задачу клиента и привести его к заявке.`;
+
+    // ===== STATE =====
+    let messageTimers = [];
+
+    // ===== INIT =====
+    function initAdmin() {
+      checkAuth();
+      setupEventListeners();
+      loadAiPrompt();
+      renderCases();
+      
+      // Set today's date as default for case form
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('caseDate').value = today;
+    }
+
+    // ===== AUTHENTICATION =====
+    function checkAuth() {
+      const isAuthenticated = localStorage.getItem(STORAGE_KEYS.AUTH) === 'true';
+      
+      if (isAuthenticated) {
+        document.getElementById('loginScreen').classList.add('admin-hidden');
+        document.getElementById('adminApp').classList.remove('admin-hidden');
+      } else {
+        document.getElementById('loginScreen').classList.remove('admin-hidden');
+        document.getElementById('adminApp').classList.add('admin-hidden');
+      }
+    }
+
+    function login(password) {
+      if (password === ADMIN_PASSWORD) {
+        try {
+          localStorage.setItem(STORAGE_KEYS.AUTH, 'true');
+          checkAuth();
+          return true;
+        } catch (e) {
+          console.error('Auth save error:', e);
+          showError(document.getElementById('loginError'), 'Ошибка сохранения сессии');
+          return false;
+        }
+      }
+      showError(document.getElementById('loginError'), 'Неверный пароль');
+      return false;
+    }
+
+    function logout() {
+      try {
+        localStorage.removeItem(STORAGE_KEYS.AUTH);
+        checkAuth();
+      } catch (e) {
+        console.error('Logout error:', e);
+      }
+    }
+
+    // ===== CASES MANAGEMENT =====
+    function getCases() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEYS.CASES);
+        return data ? JSON.parse(data) : [];
+      } catch (e) {
+        console.error('Get cases error:', e);
+        return [];
+      }
+    }
+
+    function saveCases(cases) {
+      try {
+        localStorage.setItem(STORAGE_KEYS.CASES, JSON.stringify(cases));
+        return true;
+      } catch (e) {
+        console.error('Save cases error:', e);
+        return false;
+      }
+    }
+
+    function addCase(caseData) {
+      const cases = getCases();
+      cases.unshift(caseData); // Add to beginning
+      return saveCases(cases);
+    }
+
+    function deleteCase(caseId) {
+      try {
+        const cases = getCases().filter(c => c.id !== caseId);
+        return saveCases(cases);
+      } catch (e) {
+        console.error('Delete case error:', e);
+        return false;
+      }
+    }
+
+    function renderCases() {
+      const container = document.getElementById('casesList');
+      const cases = getCases();
+
+      if (cases.length === 0) {
+        container.innerHTML = '<p class="admin-empty">Кейсы пока не добавлены</p>';
+        return;
+      }
+
+      container.innerHTML = cases.map(caseItem => `
+        <article class="admin-case" data-id="${escapeHtml(caseItem.id)}">
+          <img class="admin-case__image" src="${escapeHtml(caseItem.image)}" alt="${escapeHtml(caseItem.title)}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22100%22 viewBox=%220 0 140 100%22%3E%3Crect fill=%22%23F4F7FA%22 width=%22140%22 height=%22100%22/%3E%3Ctext fill=%22%236B7280%22 font-family=%22sans-serif%22 font-size=%2212%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3ENo image%3C/text%3E%3C/svg%3E'">
+          <div class="admin-case__content">
+            <div class="admin-case__meta">
+              <span class="admin-case__category">${escapeHtml(caseItem.category)}</span>
+              <span class="admin-case__date">${formatDate(caseItem.date)}</span>
+            </div>
+            <h3 class="admin-case__title">${escapeHtml(caseItem.title)}</h3>
+            <p class="admin-case__description">${escapeHtml(caseItem.description)}</p>
+            <p class="admin-case__duration">Срок: ${escapeHtml(caseItem.duration)}</p>
+            <button class="admin-btn admin-btn--danger admin-case__delete" type="button" data-case-id="${escapeHtml(caseItem.id)}">Удалить</button>
+          </div>
+        </article>
+      `).join('');
+
+      // Attach delete handlers
+      container.querySelectorAll('.admin-case__delete').forEach(btn => {
+        btn.addEventListener('click', handleDeleteCase);
+      });
+    }
+
+    function handleDeleteCase(event) {
+      const caseId = event.currentTarget.dataset.caseId;
+      
+      if (confirm('Удалить этот кейс?')) {
+        const success = deleteCase(caseId);
+        if (success) {
+          renderCases();
+          showSuccess(document.getElementById('caseSuccess'), 'Кейс удалён');
+        } else {
+          showError(document.getElementById('caseError'), 'Ошибка удаления кейса');
+        }
+      }
+    }
+
+    // ===== IMAGE HANDLING =====
+    function handleImageSelect(event) {
+      const file = event.target.files[0];
+      const preview = document.getElementById('imagePreview');
+      const errorEl = document.getElementById('caseError');
+
+      if (!file) {
+        preview.innerHTML = '';
+        return;
+      }
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        showError(errorEl, 'Можно загрузить только изображение');
+        event.target.value = '';
+        preview.innerHTML = '';
+        return;
+      }
+
+      // Validate file size
+      if (file.size > MAX_IMAGE_SIZE) {
+        showError(errorEl, 'Размер изображения не должен превышать 2 МБ');
+        event.target.value = '';
+        preview.innerHTML = '';
+        return;
+      }
+
+      // Convert to base64 and preview
+      fileToBase64(file)
+        .then(base64 => {
+          preview.innerHTML = `<img src="${base64}" alt="Превью изображения">`;
+          clearMessages();
+        })
+        .catch(err => {
+          console.error('Image conversion error:', err);
+          showError(errorEl, 'Ошибка обработки изображения');
+          preview.innerHTML = '';
+        });
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ===== AI PROMPT MANAGEMENT =====
+    function loadAiPrompt() {
+      try {
+        const prompt = localStorage.getItem(STORAGE_KEYS.AI_PROMPT);
+        const textarea = document.getElementById('aiPromptTextarea');
+        textarea.value = prompt || DEFAULT_AI_PROMPT;
+      } catch (e) {
+        console.error('Load prompt error:', e);
+        document.getElementById('aiPromptTextarea').value = DEFAULT_AI_PROMPT;
+      }
+    }
+
+    function saveAiPrompt() {
+      const textarea = document.getElementById('aiPromptTextarea');
+      const errorEl = document.getElementById('promptError');
+      const successEl = document.getElementById('promptSuccess');
+      
+      const prompt = textarea.value.trim();
+
+      if (!prompt) {
+        showError(errorEl, 'Промпт не может быть пустым');
+        return;
+      }
+
+      try {
+        localStorage.setItem(STORAGE_KEYS.AI_PROMPT, prompt);
+        showSuccess(successEl, 'Промпт сохранён');
+      } catch (e) {
+        console.error('Save prompt error:', e);
+        showError(errorEl, 'Ошибка сохранения данных. Возможно, localStorage переполнен.');
+      }
+    }
+
+    // ===== UI UTILITIES =====
+    function showError(element, message) {
+      clearMessages();
+      element.textContent = message;
+      element.classList.add('show');
+      
+      const timer = setTimeout(() => {
+        element.classList.remove('show');
+      }, MESSAGE_TIMEOUT);
+      
+      messageTimers.push(timer);
+    }
+
+    function showSuccess(element, message) {
+      clearMessages();
+      element.textContent = message;
+      element.classList.add('show');
+      
+      const timer = setTimeout(() => {
+        element.classList.remove('show');
+      }, MESSAGE_TIMEOUT);
+      
+      messageTimers.push(timer);
+    }
+
+    function clearMessages() {
+      messageTimers.forEach(timer => clearTimeout(timer));
+      messageTimers = [];
+      
+      document.querySelectorAll('.admin-error, .admin-success').forEach(el => {
+        el.classList.remove('show');
+      });
+    }
+
+    function escapeHtml(str) {
+      if (typeof str !== 'string') return '';
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return '';
+      try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ru-RU', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+      } catch {
+        return dateString;
+      }
+    }
+
+    // ===== EVENT LISTENERS =====
+    function getCategorySlug(category) {
+  const map = {
+    'Ремонт': 'remont',
+    'Изготовление': 'izgotovlenie',
+    'Реверс-инжиниринг': 'revers',
+    'Обслуживание': 'obsluzhivanie'
+  };
+
+  return map[category] || 'case';
+}
+    function setupEventListeners() {
+      // Login form
+      document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const password = document.getElementById('passwordInput').value;
+        login(password);
+      });
+
+      // Logout button
+      document.getElementById('logoutBtn').addEventListener('click', logout);
+
+      // Case form
+      document.getElementById('caseForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const title = document.getElementById('caseTitle').value.trim();
+        const category = document.getElementById('caseCategory').value;
+        const description = document.getElementById('caseDescription').value.trim();
+        const date = document.getElementById('caseDate').value;
+        const duration = document.getElementById('caseDuration').value.trim();
+        const imageInput = document.getElementById('caseImage');
+        const errorEl = document.getElementById('caseError');
+        const successEl = document.getElementById('caseSuccess');
+
+        // Validate required fields
+        if (!title || !category || !description || !date || !duration || !imageInput.files[0]) {
+          showError(errorEl, 'Заполните все обязательные поля');
+          return;
+        }
+
+        const file = imageInput.files[0];
+
+        // Validate image
+        if (!file.type.startsWith('image/')) {
+          showError(errorEl, 'Можно загрузить только изображение');
+          return;
+        }
+
+        if (file.size > MAX_IMAGE_SIZE) {
+          showError(errorEl, 'Размер изображения не должен превышать 2 МБ');
+          return;
+        }
+
+        try {
+          const imageBase64 = await fileToBase64(file);
+          
+          const newCase = {
+            id: Date.now(),
+            title,
+            category: getCategorySlug(category),
+            tag: category,
+            description,
+            metaDescription: description.slice(0, 160),
+            date,
+            duration,
+            image: imageBase64,
+            featured: false,
+            createdAt: new Date().toISOString()
+          };
+
+          const saved = addCase(newCase);
+          
+          if (saved) {
+            // Reset form
+            document.getElementById('caseForm').reset();
+            document.getElementById('caseDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('imagePreview').innerHTML = '';
+            
+            // Update UI
+            renderCases();
+            showSuccess(successEl, 'Кейс успешно добавлен');
+          } else {
+            showError(errorEl, 'Ошибка сохранения данных. Возможно, localStorage переполнен.');
+          }
+        } catch (err) {
+          console.error('Add case error:', err);
+          showError(errorEl, 'Ошибка обработки данных');
+        }
+      });
+
+      // Image preview on select
+      document.getElementById('caseImage').addEventListener('change', handleImageSelect);
+
+      // AI Prompt save
+      document.getElementById('savePromptBtn').addEventListener('click', saveAiPrompt);
+
+      // Clear messages when typing in form fields
+      document.getElementById('caseForm').addEventListener('input', () => {
+        clearMessages();
+      });
+
+      document.getElementById('aiPromptTextarea').addEventListener('input', () => {
+        clearMessages();
+      });
+    }
+
+    // ===== START APP =====
+    document.addEventListener('DOMContentLoaded', initAdmin);
+  </script>
+</body>
+</html>
